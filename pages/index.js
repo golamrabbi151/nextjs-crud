@@ -92,7 +92,7 @@ export default function Home({ studentList }) {
 }
 
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data } = await client.query({ query: GET_ALL_STUDENT })
   return {
     props: {

@@ -79,7 +79,7 @@ export default function Home({ subjectsList }) {
 }
 
 
-export async function getStaticProps() {
+export async function  getServerSideProps() {
     const { data } = await client.query({ query: GET_ALL_SUBJECT })
     return {
         props: {
