@@ -2,12 +2,12 @@ import Head from 'next/head'
 import { useState } from 'react'
 import { from, gql } from "@apollo/client";
 import { client } from "../../apollo-client";
-
+import { useRouter } from 'next/router'
 
 export default function CreateStudent() {
 
+    const router = useRouter()
     const [name, setName] = useState()
-
 
     const createSubject = async (e) => {
         e.preventDefault()
@@ -28,7 +28,7 @@ export default function CreateStudent() {
             }
         });
 
-        window.location.reload()
+        router.push("/subject/")
     }
 
     return (

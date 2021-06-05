@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { gql } from "@apollo/client";
 import { client } from "../../../apollo-client";
-
+import { useRouter } from 'next/router'
 export default function UpdateStudent() {
-
+    const router = useRouter()
     const [name, setName] = useState()
     const [id, setId] = useState()
 
     const getSubjectData = async () => {
-        const subjectData = await JSON.parse(sessionStorage.getItem("subjectData"))
-        if (subjectData) {
+        const subj = sessionStorage.getItem("subjectData")
+        if (subj) {
+        const subjectData = await JSON.parse(subj)
             setId(subjectData.id)
             setName(subjectData.name)
-
         }
     }
 
@@ -38,7 +38,7 @@ export default function UpdateStudent() {
             }
         })
 
-        window.location.reload()
+        router.push("/subject/")
 
     }
 

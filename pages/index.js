@@ -6,16 +6,16 @@ import { useRouter } from 'next/router'
 export default function Home({ studentList }) {
   const router = useRouter()
 
-  const getId =  async(e) => {
+  const getId = async (e) => {
     const id = e.target.value
     console.log(id);
     let studentData = await studentList.find(student => student.id === id)
     sessionStorage.setItem("studentData", JSON.stringify(studentData))
-    
+
     router.push(`student/edit/${id}`)
   }
 
-  const deleteById = async (e) =>{
+  const deleteById = async (e) => {
     const sid = e.target.value
     const { errors, data } = await client.mutate({
       mutation: gql`
@@ -26,9 +26,9 @@ export default function Home({ studentList }) {
     }
 `,
       variables: {
-          id: sid
+        id: sid
       }
-  })
+    })
     window.location.reload();
 
   }
@@ -71,7 +71,7 @@ export default function Home({ studentList }) {
                         <td>{student.subject + "  "}</td>
                         <td>
                           <button className="btn btn-primary rounded shadow " onClick={getId} value={student.id} >edit</button>
-                          <button className="btn btn-danger rounded shadow "  onClick={deleteById} value={student.id} style={{marginLeft:"2px"}}>delete</button>
+                          <button className="btn btn-danger rounded shadow " onClick={deleteById} value={student.id} style={{ marginLeft: "2px" }}>delete</button>
                         </td>
                       </tr>
                     ))

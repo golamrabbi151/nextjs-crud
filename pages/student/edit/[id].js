@@ -3,8 +3,11 @@ import Head from 'next/head'
 import { gql } from "@apollo/client";
 import { client } from "../../../apollo-client";
 import { GET_ALL_SUBJECT } from "../../api/query"
+import { useRouter } from 'next/router'
 
 export default function UpdateStudent() {
+
+    const router = useRouter()
 
     const [name, setName] = useState()
     const [email, setEmail] = useState()
@@ -15,8 +18,9 @@ export default function UpdateStudent() {
     const [subjectsList, setSubjectsList] = useState([])
 
     const getSudentData = async () => {
-        const studentData = await JSON.parse(sessionStorage.getItem("studentData"))
-        if (studentData) {
+        const stud = sessionStorage.getItem("studentData")
+        if (stud) {
+            const studentData = await JSON.parse(stud)
             setId(studentData.id)
             setName(studentData.name)
             setEmail(studentData.email)
@@ -61,8 +65,8 @@ export default function UpdateStudent() {
                 input: studentInfo
             }
         });
-        console.log(data.updateStudent)
-        
+        router.push("/")
+
     }
 
     useEffect(() => {
@@ -105,7 +109,7 @@ export default function UpdateStudent() {
                         <div className="form-group">
                             <label >Subject</label>
 
-                            <select id="inputState" class="form-control" name="subject" value={subject} onChange={(e) => setSubject(e.target.value)}>
+                            <select id="inputState" className="form-control" name="subject" value={subject} onChange={(e) => setSubject(e.target.value)}>
                                 <option selected >{subject}</option>
                                 {
                                     subjectsList.map((subject, i) => (
