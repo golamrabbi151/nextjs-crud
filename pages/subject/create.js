@@ -1,6 +1,8 @@
+import Head from 'next/head'
 import { useState } from 'react'
-import { gql } from "@apollo/client";
+import { from, gql } from "@apollo/client";
 import { client } from "../../apollo-client";
+
 
 export default function CreateStudent() {
 
@@ -11,7 +13,6 @@ export default function CreateStudent() {
         e.preventDefault()
         const subjectInfo = {
             name
-
         }
         console.log(subjectInfo)
         const { errors, data } = await client.mutate({
@@ -26,12 +27,21 @@ export default function CreateStudent() {
                 input: subjectInfo
             }
         });
-        console.log(data.createSubject);
+
+        window.location.reload()
     }
 
     return (
-        <div className="container">
-            <div className="card shadow">
+        <div className="container mt-3">
+
+            <Head>
+                <title>CRUD App (nextJs) </title>
+                <meta name="description" content="Create Subject" />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+
+            <div className="card shadow-sm">
+                <div className="card-header">Create Subject</div>
                 <div className="card-body">
                     <form onSubmit={createSubject}>
                         <div className="form-group">
@@ -43,10 +53,6 @@ export default function CreateStudent() {
                     </form>
                 </div>
             </div>
-
-
-
-
 
         </div>
     )

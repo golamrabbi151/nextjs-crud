@@ -1,16 +1,38 @@
 import Head from 'next/head'
 import { GET_ALL_STUDENT } from "./api/query"
 import { client } from "../apollo-client";
+import { gql } from "@apollo/client";
 import { useRouter } from 'next/router'
 export default function Home({ studentList }) {
   const router = useRouter()
-  const getId = async (e) => {
-    const id = e.target.value
-    let studentData = studentList.filter(student => student.id === id)
 
-    localStorage.setItem('studentData', JSON.stringify(studentData))
+  const getId =  async(e) => {
+    const id = e.target.value
+    console.log(id);
+    let studentData = await studentList.find(student => student.id === id)
+    sessionStorage.setItem("studentData", JSON.stringify(studentData))
+    
     router.push(`student/edit/${id}`)
   }
+
+  const deleteById = async (e) =>{
+    const sid = e.target.value
+    const { errors, data } = await client.mutate({
+      mutation: gql`
+      mutation deleteStudent ($id: ID!) {
+        deleteStudent (id: $id) {
+            id
+        }
+    }
+`,
+      variables: {
+          id: sid
+      }
+  })
+    window.location.reload();
+
+  }
+
 
   return (
     <div className="container">
@@ -20,12 +42,9 @@ export default function Home({ studentList }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
-      <main className="container mt-2">
+      <main className="container mt-3">
         <div className="card shadow-sm">
-          <div>
-
-          </div>
+          <div className="card-header">Students List</div>
           <div className="card-body">
             <div className="table-responsive">
               <table className="table">
@@ -51,8 +70,8 @@ export default function Home({ studentList }) {
                         <td>{student.dob}</td>
                         <td>{student.subject + "  "}</td>
                         <td>
-                          <button className="btn btn-primary rounded" onClick={getId} value={student.id}>edit</button>
-                          <button className="btn btn-danger rounded">delete</button>
+                          <button className="btn btn-primary rounded shadow " onClick={getId} value={student.id} >edit</button>
+                          <button className="btn btn-danger rounded shadow "  onClick={deleteById} value={student.id} style={{marginLeft:"2px"}}>delete</button>
                         </td>
                       </tr>
                     ))
