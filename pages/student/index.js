@@ -76,11 +76,15 @@ export default function CreateStudent({ subjectsList }) {
                         </div>
                         <div className="from-group pt-2">
                             <small >Subjects</small>
-                            <select id="inputState" className="form-control" onChange={(e) => setSubject(e.target.value)}>
-                                <option selected>Choose...</option>
+                            <select id="inputState" className="form-control" onChange={(e) => setSubject(e.target.value)}
+                            defaultValue={subjectsList[0].name}
+                            >
+                                {/* <option 
+                                
+                                >Choose...</option> */}
                                 {
                                     subjectsList.map((subject, i) => (
-                                        <option value={subject.name}>{subject.name}</option>
+                                        <option value={subject.name} key={i}>{subject.name}</option>
                                     ))
                                 }
 
